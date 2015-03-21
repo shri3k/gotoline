@@ -1,0 +1,19 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/html4/frameset.dtd">
+<html>
+
+<head>
+  <title>Testing bookmark</title>
+</head>
+
+<frameset framespacing="0" frameborder="0" rows="20px,100%" border="0">
+  <frame src="index.html" name="mine_top" frameborder="0" scrolling="no", noresize="1">
+  <frame src="index.html" name="mine_inner">
+</frameset>
+<script type="text/javascript">
+(function(){
+    window.onload= function(){
+      console.dir(window.frames["mine_inner"]);
+    };
+}());
+</script>
+</html>
