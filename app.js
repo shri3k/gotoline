@@ -6,7 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var redis = require('node-redis');
-
+var config = require('./config/');
 var app = module.exports = express();
 
 // view engine setup
@@ -24,7 +24,7 @@ app.use(bodyParser.urlencoded({
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.db = redis.createClient();
+app.db = redis.createClient(config.db.port, config.db.host, config.db.cred || '');
 app.db.on('connect', function(){
   console.log("connected to the db");
 });

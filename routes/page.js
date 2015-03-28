@@ -4,19 +4,6 @@ var express = require('express');
 var router = express.Router();
 var pageModel = require('../models/page');
 
-function injectScript(dat) {
-  var serve = '';
-  dat.on('data', function(res) {
-    serve += res.toString();
-  });
-  dat.on('end', function() {
-    var slicedUp = serve.split(/(<\/body>)/);
-    slicedUp.splice(2, 0, "<script>window.onload = function(){ window.scrollTo(0,500);}</script>");
-    console.log(slicedUp);
-    response.status(200).send(slicedUp.join());
-  });
-}
-
 router.get('/', function(req, res, next) {
   res.render('page', pageModel.getPage());
 });
@@ -27,12 +14,27 @@ router.get('/:id', function(req, response, next) {
       throw new Error(err);
     }
     try {
-      http.get(res.toString(), injectScript);
+      http.get(res.toString(), injectScript(response));
     } catch (e) {
-      console.log("trying https", e);
-      https.get(res.toString(), injectScript);
+      console.log("trying https..");
+      https.get(res.toString(), injectScript(response));
     }
   });
 });
 
 module.exports = router;
+
+function injectScript(resp) {
+  return function(dat) {
+    var serve = '';
+    dat.on('data', function(res) {
+      serve += res.toString();
+    });
+    dat.on('end', function() {
+      var slicedUp = serve.split(/(<\/body>)/);
+      slicedUp.splice(2, 0, "<script>window.onload = function(){ window.scrollTo(0,500);}</script>");
+      // console.log(slicedUp);
+      resp.status(200).send(slicedUp.join());
+    });
+  };
+}
