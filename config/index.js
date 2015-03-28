@@ -1,14 +1,16 @@
 var path = require('path');
+var debug = require('debug')('gotoline');
 var defaults = require('defaults');
 
+var envDir = '/env';
 var alias = {
-  'dev': require('./env/development'),
-  'stage': require('./env/stage'),
-  'prod': require('./env/production')
+  'dev': "development",
+  'stage': "staging",
+  'prod': "production"
 };
 
 var options = {
-
+  //default options go here
 };
 
 /**
@@ -22,17 +24,23 @@ var options = {
  */
 function config(env, options) {
   var conf;
-  try {
-    // check if it's alias first
-    if (alias[env]) {
-      conf = require(path.join('./env', alias[env]));
-    } else {
-      conf = require(path.join('./env', env));
+  // check if it's in alias first
+  if (alias[env]) {
+    conf = require('.' + path.join(envDir, alias[env]));
+    debug("Running in " + alias[env]);
+  } else {
+    try {
+      try{
+        conf = require('.' + path.join(envDir, env));
+        debug("Running in " + env);
+      } catch(e){
+        throw new Error('No environment found!:' + env);
+      }
+    } catch (e) {
+      debug(e.message);
+      debug('Falling back to dev env');
+      conf = require('.' + path.join(envDir, alias.dev));
     }
-    throw new Error('No environment found!');
-  } catch (e) {
-    process.stdout.write('Falling back to dev env');
-    conf = require(path.join('./env', alias.dev));
   }
   return defaults(options, conf);
 }

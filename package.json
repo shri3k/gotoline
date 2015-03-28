@@ -15,5 +15,8 @@
     "morgan": "~1.5.1",
     "node-redis": "^0.1.7",
     "serve-favicon": "~2.2.0"
+  },
+  "devDependencies": {
+    "debug": "^2.1.3"
   }
 }
