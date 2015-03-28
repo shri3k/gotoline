@@ -24,7 +24,7 @@ app.use(bodyParser.urlencoded({
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.db = redis.createClient(config.db.port, config.db.host, config.db.cred || '');
+app.db = redis.createClient(config.db.port, config.db.host, config.db.auth || '');
 app.db.on('connect', function(){
   console.log("connected to the db");
 });
