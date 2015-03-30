@@ -4,11 +4,11 @@ var express = require('express');
 var router = express.Router();
 var pageModel = require('../models/page');
 
-router.get('/', function(req, res, next) {
+router.get('/', function(req, res) {
   res.render('page', pageModel.getPage());
 });
 
-router.get('/:id', function(req, response, next) {
+router.get('/:id', function(req, response) {
   pageModel.getPage(req.params.id, function(err, res) {
     if (err) {
       throw new Error(err);

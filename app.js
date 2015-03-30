@@ -5,7 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var redis = require('node-redis');
+var redis = require('redis');
 var config = require('./config/');
 var app = module.exports = express();
 
