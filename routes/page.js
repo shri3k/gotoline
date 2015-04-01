@@ -3,6 +3,7 @@ var https = require('https');
 var express = require('express');
 var router = express.Router();
 var pageModel = require('../models/page');
+var scrollify = require('../lib/scroll');
 
 router.get('/', function(req, res, next) {
   res.render('page', pageModel.getPage());
