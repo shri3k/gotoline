@@ -6,6 +6,8 @@ var pageModel = require('../models/page');
 var positionify = require('../lib/scroll');
 var scrollify = require('../scripts/scroll');
 
+var splitter = /(<\/body>)/;
+
 router.get('/', function(req, res, next) {
   res.render('page', pageModel.getPage());
 });
@@ -34,9 +36,8 @@ function injectScript(resp, url) {
       serve += res.toString();
     });
     dat.on('end', function() {
-      var slicedUp = serve.split(/(<\/body>)/);
+      var slicedUp = serve.split(splitter);
       slicedUp.splice(2, 0, scrollify(0, positionify.getScrollTo(url)));
-      // console.log(slicedUp);
       resp.status(200).send(slicedUp.join());
     });
   };
