@@ -4,6 +4,7 @@ var count;
 exports.getRoot = function() {
   // redis.get
 };
+
 var setPage = exports.setPage = function(req, cb) {
   var id = generate().dashed;
   console.log(id);
