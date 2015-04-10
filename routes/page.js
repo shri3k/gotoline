@@ -3,8 +3,8 @@ var https = require('https');
 var express = require('express');
 var router = express.Router();
 var pageModel = require('../models/page');
-var positionify = require('../lib/scroll');
-var scrollify = require('../scripts/scroll');
+var positionify = require('../lib/core/scroll');
+var scrollify = require('../lib/scripts/scroll');
 
 var splitter = /(<\/body>)/;
 
@@ -13,8 +13,8 @@ router.get('/', function(req, res) {
 });
 
 router.get('/:id', function(req, response) {
-  var url = res.toString();
   pageModel.getPage(req.params.id, function(err, res) {
+  var url = res.toString();
     if (err) {
       throw new Error(err);
     }
