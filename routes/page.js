@@ -5,7 +5,6 @@ var router = express.Router();
 var pageModel = require('../models/page');
 var positionify = require('../lib/core/scroll');
 var scrollify = require('../lib/scripts/scroll');
-
 var splitter = /(<\/body>)/;
 
 router.get('/', function(req, res) {
@@ -16,7 +15,7 @@ router.get('/:id', function(req, response) {
   pageModel.getPage(req.params.id, function(err, res) {
   var url = res.toString();
     if (err) {
-      throw new Error(err);
+      return new Error(err);
     }
     try {
       http.get(url, injectScript(response, url));
@@ -38,7 +37,7 @@ function injectScript(resp, url) {
     dat.on('end', function() {
       var slicedUp = serve.split(splitter);
       slicedUp.splice(2, 0, scrollify(0, positionify.getScrollTo(url)));
-      resp.status(200).send(slicedUp.join());
+      resp.status(200).send(slicedUp.join(''));
     });
   };
 }
