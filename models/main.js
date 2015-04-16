@@ -1,8 +1,8 @@
 var db = require('../app').db;
 var generate = require('project-name-generator');
 var count;
-exports.getRoot = function() {
-  // redis.get
+exports.getRoot = function(req, cb) {
+ cb(null, {"title":"Title"});
 };
 
 var setPage = exports.setPage = function(req, cb) {

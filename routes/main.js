@@ -21,8 +21,14 @@ var mainModel = require('../models/main');
  *     "error": "null"
  *   }
  */
-router.get('/', function(req, res, next) {
-  res.render('index', mainModel.getRoot());
+router.get('/', function(req, res) {
+  var response = res;
+  mainModel.getRoot(req, function(err, data) {
+    if (err) {
+      return new Error(err);
+    }
+    res.render('index', data);
+  });
 });
 
 /**
@@ -46,11 +52,11 @@ router.get('/', function(req, res, next) {
  */
 router.post('/', function(req, res) {
   var response = res;
-  mainModel.setPage(req, function(err, res) {
+  mainModel.setPage(req, function(err, data) {
     if (err) {
       throw new Error(err);
     }
-    response.status(200).send('ok');
+    response.status(200).send(data);
   });
 });
 module.exports = router;
