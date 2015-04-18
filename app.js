@@ -16,7 +16,7 @@ app.engine('html', require('hbs').__express);
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
-var CORS = function(req, res, next){
+var CORS = function(req, res, next) {
   res.set('Access-Control-Allow-Origin', '*');
   next();
 };
@@ -31,9 +31,25 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(CORS);
 
 app.db = redis.createClient(config.db.port, config.db.host, config.db.auth || '');
-app.db.on('connect', function(){
+app.db.on('connect', function() {
   console.log("connected to the db");
 });
+
+/* pilot stage
+ * probably extend this in future
+ */
+app.db.getIt = function(key, cb) {
+  var multi = this.multi();
+  var keySplit = key.split(":")[1];
+  var hitKey = keySplit ? "hit:" + keySplit : "hit:" + key;
+  if (!keySplit) {
+    process.stdout.write(key + "looks out of format");
+  }
+  multi.incr(hitKey);
+  multi.get(key);
+  multi.exec(cb);
+};
+
 var routes = require('./routes/index');
 
 // catch 404 and forward to error handler

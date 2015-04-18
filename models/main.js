@@ -44,8 +44,8 @@ var setPage = exports.setPage = function(req, cb) {
     if (reply === 0) {
       return setValue();
     }
-    var existingId = db.get("val:" + url, function(err, reply) {
-      cb(null, reply);
+    var existingId = db.getIt("val:" + url, function(err, reply) {
+      cb(null, reply[1]);
     });
   });
 };

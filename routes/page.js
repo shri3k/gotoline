@@ -12,12 +12,13 @@ router.get('/?', function(req, res) {
 });
 
 router.get('/:id', function(req, response) {
-  pageModel.getPage(req.params.id, function(err, res) {
-  var url = res.toString();
+  pageModel.getPage("key:" ``+ req.params.id, function(err, res) {
+    var url;
     if (err) {
       return new Error(err);
     }
     try {
+      url = res.toString();
       http.get(url, injectScript(response, url));
     } catch (e) {
       console.log("trying https..");
