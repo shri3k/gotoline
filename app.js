@@ -16,6 +16,11 @@ app.engine('html', require('hbs').__express);
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
+var CORS = function(req, res, next){
+  res.set('Access-Control-Allow-Origin', '*');
+  next();
+};
+
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -23,6 +28,7 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(CORS);
 
 app.db = redis.createClient(config.db.port, config.db.host, config.db.auth || '');
 app.db.on('connect', function(){
