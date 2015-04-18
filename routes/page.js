@@ -7,7 +7,7 @@ var positionify = require('../lib/core/scroll');
 var scrollify = require('../lib/scripts/scroll');
 var splitter = /(<\/body>)/;
 
-router.get('/', function(req, res) {
+router.get('/?', function(req, res) {
   res.render('page', pageModel.getPage());
 });
 
