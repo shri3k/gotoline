@@ -40,7 +40,7 @@ app.db.on('connect', function() {
  */
 app.db.getIt = function(key, cb) {
   var multi = this.multi();
-  var keySplit = key.split(":")[1];
+  var keySplit = key.split("val:")[1];
   var hitKey = keySplit ? "hit:" + keySplit : "hit:" + key;
   if (!keySplit) {
     process.stdout.write(key + "looks out of format");

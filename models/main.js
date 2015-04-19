@@ -9,7 +9,7 @@ exports.getRoot = function(req, cb) {
 
 var setPage = exports.setPage = function(req, cb) {
   function hasValue(val, cb) {
-    return db.exists("val:" + val, cb);
+    return db.get("val:" + val, cb);
   }
 
   function setValue() {
@@ -41,11 +41,10 @@ var setPage = exports.setPage = function(req, cb) {
     if (err) {
       return new Error(err);
     }
-    if (reply === 0) {
+    if (!reply) {
       return setValue();
     }
-    var existingId = db.getIt("val:" + url, function(err, reply) {
-      cb(null, reply[1]);
-    });
+    db.incr("hit:" + reply);
+    cb(null,reply);
   });
 };
