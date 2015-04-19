@@ -6,16 +6,15 @@ var pageModel = require('../models/page');
 var positionify = require('../lib/core/scroll');
 var scrollify = require('../lib/scripts/scroll');
 var splitter = /(<\/body>)/;
-
-router.get('/?', function(req, res) {
+router.get('/', function(req, res) {
   res.render('page', pageModel.getPage());
 });
 
-router.get('/:id', function(req, response) {
-  pageModel.getPage("key:" ``+ req.params.id, function(err, res) {
+router.get('/:id', function(req, response, next) {
+  pageModel.getPage("key:" + req.params.id, function(err, res) {
     var url;
-    if (err) {
-      return new Error(err);
+    if (err || !res) {
+      return next();
     }
     try {
       url = res.toString();

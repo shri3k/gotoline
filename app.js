@@ -27,8 +27,8 @@ app.use(bodyParser.urlencoded({
   extended: false
 }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 app.use(CORS);
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.db = redis.createClient(config.db.port, config.db.host, config.db.auth || '');
 app.db.on('connect', function() {
@@ -50,7 +50,7 @@ app.db.getIt = function(key, cb) {
   multi.exec(cb);
 };
 
-var routes = require('./routes/index');
+var routes = require('./routes');
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
